@@ -4,7 +4,8 @@
     <boxes>
       <div v-for="rank in ranks" v-bind:key="rank.id">
         <h2>{{ rank }} Tier</h2>
-        <h3>Search bar goes here</h3>
+        <SearchBar :class="search-bar-styling"/>
+        <h1> </h1>
         <box-styling>
           <Box/>
         </box-styling>
@@ -14,9 +15,12 @@
 </template>
 
 <script>
+
 import Box from './Box.vue'
+import SearchBar from './SearchBar.vue'
+
 export default {
-  components: { Box },
+  components: { Box, SearchBar },
   name: 'HelloWorld',
   data: function () {
     return {
@@ -62,8 +66,5 @@ boxes{
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-page {
-  color: blue; 
 }
 </style>
