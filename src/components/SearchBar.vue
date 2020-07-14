@@ -1,12 +1,22 @@
 <template>
   <div>
-    <div class="wrap">
-      <div class="search">
-        <input type="text" class="searchTerm" placeholder="What are you looking for?">
-        <button type="submit" class="searchButton">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
+    <div class="autocomplete">
+      <input
+        type="text"
+        v-model="search"
+        @input="onChange"
+        class="input-text"
+      />
+      <ul class="autocomplete-results" v-show="isOpen">
+        <li 
+          class="autocomplete-result" 
+          v-for="(result,i) in results"
+          :key="i"
+           @click="setResult(result)"
+        >
+          {{result}}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -14,51 +24,59 @@
 <script>
 export default {
   name: 'HelloWorld',
+  data() {
+    return {
+      search: '',
+      results: [],
+      items: ["Attack on Titan", "One Punch Man", "One Piece"],
+      isOpen: false,
+    };
+  },
+  methods: {
+    onChange() {
+      this.isOpen = true;
+      this.filterResults();
+    },
+    filterResults() {
+      this.results = this.items.filter(item => item.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+    },
+    setResult(result) {
+      this.search = result;
+      this.isOpen = false;
+    },
+  },
   props: {
-    rank: String
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-body{
-  background: #f2f2f2;
-  font-family: 'Open Sans', sans-serif;
-}
+  .autocomplete {
+    position: relative;
+    width: 1420x;
+  }
 
-.search {
-  width: 100%;
-  position: relative;
-  display: flex;
-}
+  .autocomplete-results {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #eeeeee;
+    height: 120px;
+    overflow: auto;
+  }
 
-.searchTerm {
-  width: 100%;
-  border: 3px solid #00B4CC;
-  border-right: none;
-  padding: 5px;
-  height: 20px;
-  border-radius: 5px 0 0 5px;
-  outline: none;
-  color: #9DBFAF;
-}
+  .autocomplete-result {
+    list-style: none;
+    text-align: left;
+    padding: 4px 2px;
+    cursor: pointer;
+  }
 
-.searchTerm:focus{
-  color: #00B4CC;
-}
+  .input-text {
+    width: 1420px;
+  }
 
-.searchButton {
-  width: 40px;
-  height: 36px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
-  text-align: center;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-/*Resize the wrap to see the search bar change!*/
+  .autocomplete-result:hover {
+    background-color: #4AAE9B;
+    color: white;
+  }
 </style>
